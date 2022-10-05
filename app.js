@@ -1,4 +1,8 @@
-const itemsList = document.querySelector('.quiz-container')
+const itemsList = document.querySelector('.quiz-container');
+const checkBtn = document.querySelector('.check-btn');
+const alertInfo = document.querySelector('.alert-container');
+
+let choosenAnswers = [];
 
 window.addEventListener('DOMContentLoaded', renderData())
 
@@ -28,9 +32,10 @@ async function renderData() {
     addAnswers(correctAnswers, incorrectAnswers);
     shuffleAnswers(answers);
 
-    dataArray.forEach((question,index) => {
+    dataArray.forEach((question, index) => {
+        let id = index;
         html = html +
-            `<div class="single-question-container">
+            `<div class="single-question-container" dataset-id=${id}>
         <p class="question">${question.question}</p>
         <div class="answers-container">
             <button class="answer-btn">${mixedAnswers[index][0]}</button>
@@ -41,7 +46,38 @@ async function renderData() {
     </div>`
     });
     itemsList.innerHTML = html;
+    const btns = document.querySelectorAll('.answer-btn');
+    btns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            let clickedElementBtn = e.currentTarget;
+
+            const parent = e.currentTarget.parentElement.parentElement;
+
+            let elementBtns = parent.querySelectorAll('.answer-btn');
+
+            parent.addEventListener('click', () => {
+                elementBtns.forEach((elementBtn) => {
+                    elementBtn.classList.remove('clicked')
+                    clickedElementBtn.classList.add('clicked')
+                })
+            })
+
+        })
+    })
 };
+// checking answers
+
+checkBtn.addEventListener('click', () => {
+    let selectedAnswers = document.querySelectorAll('.clicked')
+    if(selectedAnswers.length === 5) {
+        console.log("zaznaczone")
+    } else {
+        alertInfo.classList.add('show-alert');
+        setTimeout(() => {
+            alertInfo.classList.remove('show-alert')
+        }, 2000);
+    }
+})
 
 // functions
 
@@ -74,6 +110,11 @@ function shuffleAnswers(arrays) {
         mixedAnswers.push(shuffle(item))
     })
 };
+
+function setToDefault(alert) {
+    alert.innerHTML = "";
+    alert.classList.remove('show-alert')
+}
 
 // external functions
 

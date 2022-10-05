@@ -22,7 +22,8 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 200px;
+    padding-top: 50px;
+    gap: 20px;
 }
 
 .title-container {
@@ -46,7 +47,7 @@ main {
     padding: 20px 50px;
 }
 
-.answer-btn {
+.answer-btn, .check-btn {
     background-color: white;
     border: 2px solid lightskyblue;
     padding: 10px 20px;
@@ -54,7 +55,24 @@ main {
     cursor: pointer;
 }
 
-.answer-btn:hover {
+.answer-btn.clicked {
     background-color: lightskyblue;
     color: white;
+}
+
+.check-btn:hover {
+    background-color: lightskyblue;
+    color: white;
+}
+
+.alert-container {
+    visibility: hidden;
+    width: 300px;
+    background-color: rgb(233, 179, 179);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.show-alert {
+    visibility: visible;
 }
