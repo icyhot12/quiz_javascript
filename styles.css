@@ -8,13 +8,20 @@ html,body {
     font-family: 'Poppins', sans-serif;
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 main {
     height: 100vh;
 }
 
 .main-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding-top: 200px;
 }
 
@@ -22,3 +29,32 @@ main {
     font-size: 1.5rem;
 }
 
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.single-question-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    border: 0.5px solid lightskyblue;
+    border-radius: 5px;
+    padding: 20px 50px;
+}
+
+.answer-btn {
+    background-color: white;
+    border: 2px solid lightskyblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.answer-btn:hover {
+    background-color: lightskyblue;
+    color: white;
+}
