@@ -12,6 +12,7 @@ const incorrectAnswers = [];
 const answers = [];
 let mixedAnswers = [];
 let choosenAnswers = [];
+let quizFinished = false;
 
 async function fetchData() {
     let url = 'https://opentdb.com/api.php?amount=5&type=multiple';
@@ -64,27 +65,16 @@ async function renderData() {
 
         const btns = document.querySelectorAll('.answer-btn');
         btns.forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                let clickedElementBtn = e.currentTarget;
-
-                const parent = e.currentTarget.parentElement.parentElement;
-
-                let elementBtns = parent.querySelectorAll('.answer-btn');
-
-                parent.addEventListener('click', () => {
-                    elementBtns.forEach((elementBtn) => {
-                        elementBtn.classList.remove('clicked')
-                        clickedElementBtn.classList.add('clicked')
-                    })
-                })
-            })
-        })
+            btn.addEventListener('click', onlyOneBtn)
+        }
+        )
     }
 };
 // checking answers
 
 checkBtn.addEventListener('click', () => {
     let correctCounter = 0;
+    window.scrollTo(0,0);
     let selectedAnswers = document.querySelectorAll('.clicked')
     if (selectedAnswers.length === 5) {
         alertInfo.classList.remove('visibility-show')
@@ -100,11 +90,15 @@ checkBtn.addEventListener('click', () => {
         })
         // show your score
         counter.innerHTML = `Your score is: <b>${correctCounter} correct answers`;
+        if(correctCounter <1 ){
+            counter.classList.add('score-negative')
+        }
         counter.classList.add('visibility-show');
         // change buttons
         checkBtn.classList.add('display-hide');
         resetBtn.classList.add('display-block');
         resetBtn.addEventListener('click', reloadPage);
+        quizFinished = !quizFinished;
     } else {
         // alert if not all answers checked
         alertInfo.classList.add('visibility-show');
@@ -114,7 +108,7 @@ checkBtn.addEventListener('click', () => {
     }
 })
 
-// functions
+// functions --------------------------------------
 
 function getCorrectAnswers(array) {
     if (array.length > 0) {
@@ -146,9 +140,23 @@ function shuffleAnswers(arrays) {
     })
 };
 
-function setToDefault(alert) {
-    alert.innerHTML = "";
-    alert.classList.remove('show-alert')
+function onlyOneBtn(e) {
+    if (!quizFinished) {
+        let clickedElementBtn = e.currentTarget;
+
+        const parent = e.currentTarget.parentElement.parentElement;
+
+        let elementBtns = parent.querySelectorAll('.answer-btn');
+
+        parent.addEventListener('click', parentOneBtn(elementBtns, clickedElementBtn))
+    }
+}
+
+function parentOneBtn(elements, clickedElements) {
+    elements.forEach((elementBtn) => {
+        elementBtn.classList.remove('clicked')
+        clickedElements.classList.add('clicked')
+    })
 }
 
 function reloadPage() {
