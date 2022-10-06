@@ -1,8 +1,9 @@
 const itemsList = document.querySelector('.quiz-container');
+const startBtn = document.querySelector('.start-btn');
 const checkBtn = document.querySelector('.check-btn');
+const resetBtn = document.querySelector('.reset-btn');
 const alertInfo = document.querySelector('.alert-container');
-
-let choosenAnswers = [];
+const counter = document.querySelector('.score-container');
 
 window.addEventListener('DOMContentLoaded', renderData())
 
@@ -10,6 +11,7 @@ const correctAnswers = [];
 const incorrectAnswers = [];
 const answers = [];
 let mixedAnswers = [];
+let choosenAnswers = [];
 
 async function fetchData() {
     let url = 'https://opentdb.com/api.php?amount=5&type=multiple';
@@ -20,6 +22,8 @@ async function fetchData() {
         console.log(error);
     }
 }
+checkBtn.classList.add('display-hide');
+resetBtn.classList.add('display-hide');
 
 async function renderData() {
     let fetchedData = await fetchData();
@@ -32,59 +36,80 @@ async function renderData() {
     addAnswers(correctAnswers, incorrectAnswers);
     shuffleAnswers(answers);
 
-    console.log(correctAnswers)
+    // rendering quiz
 
-    dataArray.forEach((question, index) => {
-        let id = index;
-        html = html +
-            `<div class="single-question-container" dataset-id=${id}>
-        <p class="question">${question.question}</p>
-        <div class="answers-container">
-            <button class="answer-btn">${mixedAnswers[index][0]}</button>
-            <button class="answer-btn">${mixedAnswers[index][1]}</button>
-            <button class="answer-btn">${mixedAnswers[index][2]}</button>
-            <button class="answer-btn">${mixedAnswers[index][3]}</button>
-        </div>
-    </div>`
-    });
-    itemsList.innerHTML = html;
-    const btns = document.querySelectorAll('.answer-btn');
-    btns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            let clickedElementBtn = e.currentTarget;
 
-            const parent = e.currentTarget.parentElement.parentElement;
+    startBtn.addEventListener('click', showQuiz)
 
-            let elementBtns = parent.querySelectorAll('.answer-btn');
+    function showQuiz() {
+        startBtn.classList.add('display-hide');
+        checkBtn.classList.remove('display-hide');
 
-            parent.addEventListener('click', () => {
-                elementBtns.forEach((elementBtn) => {
-                    elementBtn.classList.remove('clicked')
-                    clickedElementBtn.classList.add('clicked')
+        dataArray.forEach((question, index) => {
+            let id = index;
+            html = html +
+                `<div class="single-question-container" dataset-id=${id}>
+            <p class="question">${question.question}</p>
+            <div class="answers-container">
+                <button class="answer-btn">${mixedAnswers[index][0]}</button>
+                <button class="answer-btn">${mixedAnswers[index][1]}</button>
+                <button class="answer-btn">${mixedAnswers[index][2]}</button>
+                <button class="answer-btn">${mixedAnswers[index][3]}</button>
+            </div>
+        </div>`
+        });
+        itemsList.innerHTML = html;
+
+        // only one button clicked 
+
+        const btns = document.querySelectorAll('.answer-btn');
+        btns.forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                let clickedElementBtn = e.currentTarget;
+
+                const parent = e.currentTarget.parentElement.parentElement;
+
+                let elementBtns = parent.querySelectorAll('.answer-btn');
+
+                parent.addEventListener('click', () => {
+                    elementBtns.forEach((elementBtn) => {
+                        elementBtn.classList.remove('clicked')
+                        clickedElementBtn.classList.add('clicked')
+                    })
                 })
             })
-
         })
-    })
+    }
 };
 // checking answers
 
 checkBtn.addEventListener('click', () => {
+    let correctCounter = 0;
     let selectedAnswers = document.querySelectorAll('.clicked')
-    if(selectedAnswers.length === 5) {
-        selectedAnswers.forEach((answer,index) => {
+    if (selectedAnswers.length === 5) {
+        alertInfo.classList.remove('visibility-show')
+        selectedAnswers.forEach((answer, index) => {
             if (answer.innerHTML !== correctAnswers[index]) {
-                answer.classList.remove('clicked')
-                answer.classList.add('incorrect')
+                answer.classList.remove('clicked');
+                answer.classList.add('incorrect');
             } else if (answer.innerHTML === correctAnswers[index]) {
                 answer.classList.remove('clicked')
                 answer.classList.add('correct')
+                correctCounter++;
             }
         })
+        // show your score
+        counter.innerHTML = `Your score is: <b>${correctCounter} correct answers`;
+        counter.classList.add('visibility-show');
+        // change buttons
+        checkBtn.classList.add('display-hide');
+        resetBtn.classList.add('display-block');
+        resetBtn.addEventListener('click', reloadPage);
     } else {
-        alertInfo.classList.add('show-alert');
+        // alert if not all answers checked
+        alertInfo.classList.add('visibility-show');
         setTimeout(() => {
-            alertInfo.classList.remove('show-alert')
+            alertInfo.classList.remove('visibility-show')
         }, 2000);
     }
 })
@@ -124,6 +149,10 @@ function shuffleAnswers(arrays) {
 function setToDefault(alert) {
     alert.innerHTML = "";
     alert.classList.remove('show-alert')
+}
+
+function reloadPage() {
+    window.location.reload();
 }
 
 // external functions

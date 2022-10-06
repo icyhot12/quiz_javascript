@@ -17,6 +17,10 @@ main {
     height: 100vh;
 }
 
+button {
+    color: black;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -24,6 +28,7 @@ main {
     align-items: center;
     padding-top: 50px;
     gap: 20px;
+    min-height: 100vh;
 }
 
 .title-container {
@@ -34,6 +39,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 80%;
 }
 
 .single-question-container {
@@ -47,7 +53,15 @@ main {
     padding: 20px 50px;
 }
 
-.answer-btn, .check-btn {
+.answers-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    align-content: center;
+}
+
+.answer-btn, .check-btn, .reset-btn, .start-btn {
     background-color: white;
     border: 2px solid lightskyblue;
     padding: 10px 20px;
@@ -71,10 +85,10 @@ main {
     background-color: rgb(233, 179, 179);
     text-align: center;
     border-radius: 5px;
-}
-
-.show-alert {
-    visibility: visible;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .answer-btn.correct {
@@ -82,4 +96,26 @@ main {
 }
 .answer-btn.incorrect {
     background-color: rgb(233, 179, 179);
+}
+
+.score-container {
+    visibility: hidden;
+    color: rgb(22, 188, 22);
+    padding-bottom: 100px;
+}
+/* visibility changes */
+.visibility-show {
+    visibility: visible;
+}
+
+.visibility-hide {
+    visibility: hidden;
+}
+
+.display-hide {
+    display: none;
+}
+
+.display-block {
+    display: block;
 }
