@@ -23,8 +23,6 @@ async function fetchData() {
         console.log(error);
     }
 }
-checkBtn.classList.add('display-hide');
-resetBtn.classList.add('display-hide');
 
 async function renderData() {
     let fetchedData = await fetchData();
@@ -44,7 +42,7 @@ async function renderData() {
 
     function showQuiz() {
         startBtn.classList.add('display-hide');
-        checkBtn.classList.remove('display-hide');
+        checkBtn.classList.add('display-block');
 
         dataArray.forEach((question, index) => {
             let id = index;
@@ -95,7 +93,7 @@ checkBtn.addEventListener('click', () => {
         }
         counter.classList.add('visibility-show');
         // change buttons
-        checkBtn.classList.add('display-hide');
+        checkBtn.classList.remove('display-block');
         resetBtn.classList.add('display-block');
         resetBtn.addEventListener('click', reloadPage);
         quizFinished = !quizFinished;

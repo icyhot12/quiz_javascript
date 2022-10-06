@@ -80,6 +80,14 @@ button {
     color: white;
 }
 
+.check-btn {
+    display: none;
+}
+
+ .reset-btn {
+    display: none;
+}
+
 .alert-container {
     visibility: hidden;
     width: 300px;
