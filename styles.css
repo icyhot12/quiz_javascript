@@ -76,3 +76,10 @@ main {
 .show-alert {
     visibility: visible;
 }
+
+.answer-btn.correct {
+    background-color: rgb(162, 231, 162);
+}
+.answer-btn.incorrect {
+    background-color: rgb(233, 179, 179);
+}

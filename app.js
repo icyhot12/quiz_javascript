@@ -32,6 +32,8 @@ async function renderData() {
     addAnswers(correctAnswers, incorrectAnswers);
     shuffleAnswers(answers);
 
+    console.log(correctAnswers)
+
     dataArray.forEach((question, index) => {
         let id = index;
         html = html +
@@ -70,7 +72,15 @@ async function renderData() {
 checkBtn.addEventListener('click', () => {
     let selectedAnswers = document.querySelectorAll('.clicked')
     if(selectedAnswers.length === 5) {
-        console.log("zaznaczone")
+        selectedAnswers.forEach((answer,index) => {
+            if (answer.innerHTML !== correctAnswers[index]) {
+                answer.classList.remove('clicked')
+                answer.classList.add('incorrect')
+            } else if (answer.innerHTML === correctAnswers[index]) {
+                answer.classList.remove('clicked')
+                answer.classList.add('correct')
+            }
+        })
     } else {
         alertInfo.classList.add('show-alert');
         setTimeout(() => {
